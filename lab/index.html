@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab — 学習メモ | kazuki</title>
+<meta name="description" content="調べたこと・学んだことをまとめた個人的なノート置き場。">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0e0f" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="../assets/base.css">
+<script src="../assets/theme.js"></script>
+<style>
+  .head{padding:56px 0 30px}
+  .head h1{margin:0 0 14px; font-size:clamp(28px,4.4vw,40px); font-weight:800; letter-spacing:-.02em}
+  .head p{margin:0; max-width:36em; color:var(--fg-mut); font-size:15px}
+
+  /* ---------- controls ---------- */
+  .ctrl{display:flex; flex-direction:column; gap:14px; margin-bottom:26px}
+  .search{position:relative}
+  .search svg{position:absolute; left:15px; top:50%; transform:translateY(-50%);
+    width:17px;height:17px;color:var(--fg-dim); pointer-events:none}
+  .search input{
+    width:100%; padding:13px 44px 13px 44px; font-size:15px; font-family:inherit;
+    color:var(--fg); background:var(--bg-elev);
+    border:1px solid var(--line); border-radius:12px; outline:none;
+    transition:border-color .16s ease, box-shadow .16s ease;
+  }
+  .search input:focus{border-color:var(--accent);
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent)}
+  .search input::placeholder{color:var(--fg-dim)}
+  .clr{position:absolute; right:9px; top:50%; transform:translateY(-50%);
+    width:28px;height:28px;border:0;background:transparent;color:var(--fg-dim);
+    border-radius:8px; cursor:pointer; display:none; place-items:center; font-size:17px; line-height:1}
+  .clr:hover{background:var(--bg-sunk); color:var(--fg)}
+  .clr.on{display:grid}
+
+  .tags{display:flex; flex-wrap:wrap; gap:7px; align-items:center}
+  .tag{
+    font-size:12.5px; padding:6px 12px; border-radius:99px; cursor:pointer;
+    background:var(--bg-elev); color:var(--fg-mut);
+    border:1px solid var(--line); font-family:inherit;
+    transition:.16s;
+  }
+  .tag:hover{color:var(--fg); border-color:var(--line-str)}
+  .tag.on{background:var(--accent); color:var(--accent-fg); border-color:var(--accent)}
+  .tag .n{opacity:.6; font-size:11px; margin-left:4px; font-variant-numeric:tabular-nums}
+
+  .meta{font-size:12.5px; color:var(--fg-dim); margin:0 0 14px;
+        font-variant-numeric:tabular-nums; min-height:1.4em}
+
+  /* ---------- note list ---------- */
+  .notes{list-style:none; margin:0 0 60px; padding:0;
+    border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--bg-elev); overflow:hidden; box-shadow:var(--shadow)}
+  .notes li + li{border-top:1px solid var(--line)}
+  .notes a{display:block; padding:20px 24px; text-decoration:none; transition:background .16s ease}
+  .notes a:hover{background:var(--bg-sunk)}
+  .nrow{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:5px}
+  .nt{font-size:16px; font-weight:700; letter-spacing:-.01em}
+  .notes a:hover .nt{color:var(--accent)}
+  .nd{font-size:11.5px; color:var(--fg-dim); font-variant-numeric:tabular-nums; margin-left:auto; flex:none}
+  .nx{font-size:10.5px; color:var(--fg-dim); border:1px solid var(--line);
+      padding:1px 7px; border-radius:5px; font-family:var(--mono)}
+  .ns{margin:0 0 10px; font-size:14px; color:var(--fg-mut)}
+  .ntags{display:flex; flex-wrap:wrap; gap:6px}
+  .ntag{font-size:11px; padding:3px 8px; border-radius:6px;
+        background:var(--bg-sunk); color:var(--fg-dim); border:1px solid var(--line)}
+  mark{background:color-mix(in srgb, var(--accent) 26%, transparent); color:inherit;
+       border-radius:3px; padding:0 2px}
+
+  .state{
+    border:1px dashed var(--line-str); border-radius:var(--radius);
+    padding:46px 26px; text-align:center; color:var(--fg-mut); font-size:14.5px;
+    margin-bottom:60px;
+  }
+  .state code{font-family:var(--mono); font-size:13px; background:var(--bg-sunk);
+    padding:2px 7px; border-radius:6px; border:1px solid var(--line)}
+  @media(max-width:600px){
+    .nd{margin-left:0; width:100%; order:9}
+    .notes a{padding:18px 18px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hdr">
+    <a class="mark" href="../"><span class="dot">K</span>KAZUKI<span class="sub">/ Lab</span></a>
+    <nav>
+      <a href="../">トップ</a>
+      <a href="./" class="on">ノート</a>
+      <button class="tglr" id="tgl" aria-label="テーマ切替" title="ライト / ダーク切替">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <p class="eyebrow">Lab</p>
+    <h1>学習メモ</h1>
+    <p>
+      気になったことを調べてまとめた個人的なノートです。
+      自分の見返し用に書いているので、書きかけのものや粗いものも混ざっています。
+    </p>
+  </div>
+
+  <div class="ctrl">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="タイトル・説明・タグから検索" autocomplete="off" aria-label="ノートを検索">
+      <button class="clr" id="clr" aria-label="検索をクリア">×</button>
+    </div>
+    <div class="tags" id="tags"></div>
+  </div>
+
+  <p class="meta" id="meta"></p>
+  <ul class="notes" id="list" hidden></ul>
+  <div class="state" id="state">読み込み中…</div>
+</main>
+
+<footer>
+  <div class="wrap ft">
+    <span>© 2026 kazuki</span>
+    <span><a href="../">トップに戻る</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var listEl  = document.getElementById('list');
+  var stateEl = document.getElementById('state');
+  var metaEl  = document.getElementById('meta');
+  var tagsEl  = document.getElementById('tags');
+  var qEl     = document.getElementById('q');
+  var clrEl   = document.getElementById('clr');
+
+  var notes = [];
+  var active = new Set();
+
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+  }
+
+  // 検索語に一致した部分を <mark> で囲む（エスケープ済み文字列に対して実行）
+  function hl(escaped, q) {
+    if (!q) return escaped;
+    var needle = esc(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    try {
+      return escaped.replace(new RegExp(needle, 'gi'), function (m) { return '<mark>' + m + '</mark>'; });
+    } catch (e) { return escaped; }
+  }
+
+  function hrefOf(n) {
+    return n.type === 'html'
+      ? n.file
+      : 'viewer.html?f=' + encodeURIComponent(n.file);
+  }
+
+  function render() {
+    var q = qEl.value.trim();
+    var lq = q.toLowerCase();
+    clrEl.classList.toggle('on', q.length > 0);
+
+    var shown = notes.filter(function (n) {
+      if (active.size) {
+        var tags = n.tags || [];
+        for (var t of active) { if (tags.indexOf(t) === -1) return false; }
+      }
+      if (!lq) return true;
+      var hay = [n.title, n.desc, (n.tags || []).join(' ')].join(' ').toLowerCase();
+      return hay.indexOf(lq) !== -1;
+    });
+
+    if (!shown.length) {
+      listEl.hidden = true;
+      stateEl.hidden = false;
+      stateEl.innerHTML = '条件に合うノートがありません。';
+      metaEl.textContent = notes.length + ' 件中 0 件';
+      return;
+    }
+
+    stateEl.hidden = true;
+    listEl.hidden = false;
+    metaEl.textContent = (shown.length === notes.length)
+      ? notes.length + ' 件'
+      : notes.length + ' 件中 ' + shown.length + ' 件';
+
+    listEl.innerHTML = shown.map(function (n) {
+      var ext = n.type === 'html' ? 'HTML' : 'MD';
+      var tags = (n.tags || []).map(function (t) {
+        return '<span class="ntag">' + hl(esc(t), q) + '</span>';
+      }).join('');
+      return '<li><a href="' + esc(hrefOf(n)) + '">' +
+        '<div class="nrow">' +
+          '<span class="nt">' + hl(esc(n.title || '(無題)'), q) + '</span>' +
+          '<span class="nx">' + ext + '</span>' +
+          '<span class="nd">' + esc(n.date || '') + '</span>' +
+        '</div>' +
+        (n.desc ? '<p class="ns">' + hl(esc(n.desc), q) + '</p>' : '') +
+        (tags ? '<div class="ntags">' + tags + '</div>' : '') +
+      '</a></li>';
+    }).join('');
+  }
+
+  function buildTags() {
+    var count = {};
+    notes.forEach(function (n) {
+      (n.tags || []).forEach(function (t) { count[t] = (count[t] || 0) + 1; });
+    });
+    var names = Object.keys(count).sort(function (a, b) {
+      return count[b] - count[a] || a.localeCompare(b, 'ja');
+    });
+    tagsEl.innerHTML = names.map(function (t) {
+      return '<button class="tag" data-t="' + esc(t) + '">' + esc(t) +
+             '<span class="n">' + count[t] + '</span></button>';
+    }).join('');
+    tagsEl.querySelectorAll('.tag').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.dataset.t;
+        if (active.has(t)) { active.delete(t); b.classList.remove('on'); }
+        else { active.add(t); b.classList.add('on'); }
+        render();
+      });
+    });
+  }
+
+  qEl.addEventListener('input', render);
+  clrEl.addEventListener('click', function () { qEl.value = ''; qEl.focus(); render(); });
+
+  fetch('notes.json', { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error('notes.json が読めません'); return r.json(); })
+    .then(function (data) {
+      notes = (data || []).slice().sort(function (a, b) {
+        return String(b.date || '').localeCompare(String(a.date || ''));
+      });
+      if (!notes.length) {
+        stateEl.innerHTML = 'まだノートがありません。<br><code>lab/notes.json</code> に項目を追加すると、ここに並びます。';
+        metaEl.textContent = '';
+        return;
+      }
+      buildTags();
+      render();
+    })
+    .catch(function (e) {
+      stateEl.innerHTML = 'ノート一覧を読み込めませんでした。<br>' + esc(e.message);
+      metaEl.textContent = '';
+    });
+})();
+</script>
+</body>
+</html>
