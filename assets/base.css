@@ -1,0 +1,153 @@
+/* ============================================================
+   base.css — 全ページ共通の配色トークンと部品
+   配色を変えたいときは :root と html[data-theme="dark"] の
+   2ブロックだけを書き換えれば全ページに反映されます。
+   ============================================================ */
+
+:root{
+  --bg:#fbfbfa; --bg-elev:#ffffff; --bg-sunk:#f2f2f0;
+  --fg:#16161a; --fg-mut:#5c5c66; --fg-dim:#8a8a94;
+  --line:#e3e3df; --line-str:#d0d0ca;
+  --accent:#4338ca; --accent-fg:#ffffff; --accent-soft:#eef1ff;
+  --ok:#0f7b52; --ok-soft:#e6f5ee;
+  --warn:#8a5a00; --warn-soft:#fdf3e0;
+  --shadow:0 1px 2px rgba(16,16,22,.05), 0 8px 24px -12px rgba(16,16,22,.14);
+  --shadow-lift:0 2px 4px rgba(16,16,22,.06), 0 18px 40px -16px rgba(16,16,22,.22);
+  --radius:16px;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans Mono",monospace;
+}
+html[data-theme="dark"]{
+  --bg:#0e0e0f; --bg-elev:#17171a; --bg-sunk:#121214;
+  --fg:#eeeef2; --fg-mut:#a2a2ad; --fg-dim:#71717c;
+  --line:#26262b; --line-str:#34343b;
+  --accent:#a5b4fc; --accent-fg:#12122a; --accent-soft:#1d1d3a;
+  --ok:#5fd3a0; --ok-soft:#12291f;
+  --warn:#e0b062; --warn-soft:#2a2113;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 8px 24px -12px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 4px rgba(0,0,0,.5), 0 18px 40px -16px rgba(0,0,0,.85);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; overflow-x:hidden; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",
+    "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+  font-size:16px; line-height:1.75; letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+a{color:inherit}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+.wrap-narrow{max-width:760px; margin:0 auto; padding:0 24px}
+
+/* ---------- header ---------- */
+header{
+  position:sticky; top:0; z-index:50;
+  background:color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.hdr{display:flex; align-items:center; justify-content:space-between; height:62px; gap:16px}
+.mark{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.06em;
+  font-size:14px; text-decoration:none; white-space:nowrap}
+.mark .dot{width:22px;height:22px;border-radius:7px;background:var(--accent);color:var(--accent-fg);
+  display:grid;place-items:center;font-size:12px;font-weight:800}
+.mark .sub{color:var(--fg-dim); font-weight:600; letter-spacing:.04em}
+.hdr nav{display:flex; align-items:center; gap:4px}
+.hdr nav a{
+  font-size:13px; color:var(--fg-mut); text-decoration:none;
+  padding:7px 11px; border-radius:9px; transition:.18s;
+}
+.hdr nav a:hover{color:var(--fg); background:var(--bg-sunk)}
+.hdr nav a.on{color:var(--fg); background:var(--bg-sunk)}
+@media(max-width:640px){ .hdr nav a{display:none} .mark .sub{display:none} }
+.tglr{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--line);
+  background:var(--bg-elev); color:var(--fg-mut); cursor:pointer;
+  display:grid;place-items:center; transition:.18s; margin-left:6px; flex:none;
+}
+.tglr:hover{color:var(--fg); border-color:var(--line-str)}
+.tglr svg{width:17px;height:17px}
+html[data-theme="dark"] .i-sun{display:none}
+html:not([data-theme="dark"]) .i-moon{display:none}
+
+/* ---------- typography helpers ---------- */
+.eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--fg-dim); margin:0 0 20px;
+}
+.eyebrow::before{content:""; width:22px;height:1px;background:var(--line-str)}
+section{padding:56px 0}
+.sec-hd{display:flex; align-items:baseline; gap:14px; margin-bottom:8px}
+.sec-hd h2{margin:0; font-size:21px; letter-spacing:-.01em; font-weight:750}
+.sec-hd .cnt{font-size:12px; color:var(--fg-dim); font-variant-numeric:tabular-nums}
+.sec-sub{margin:0 0 30px; color:var(--fg-mut); font-size:14.5px}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:12px 20px; border-radius:12px; font-size:14.5px; font-weight:600;
+  text-decoration:none; border:1px solid transparent; cursor:pointer;
+  font-family:inherit;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-p{background:var(--accent); color:var(--accent-fg); box-shadow:var(--shadow)}
+.btn-p:hover{box-shadow:var(--shadow-lift)}
+.btn-s{background:var(--bg-elev); color:var(--fg); border-color:var(--line-str)}
+.btn-s:hover{background:var(--bg-sunk)}
+.btn svg{width:15px;height:15px}
+.cta{display:flex; flex-wrap:wrap; gap:12px}
+
+/* ---------- cards ---------- */
+.grid{display:grid; gap:18px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:860px){ .grid-2{grid-template-columns:1fr} }
+.card{
+  position:relative; display:flex; flex-direction:column;
+  background:var(--bg-elev); border:1px solid var(--line);
+  border-radius:var(--radius); padding:26px; box-shadow:var(--shadow);
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.card:hover{transform:translateY(-3px); box-shadow:var(--shadow-lift); border-color:var(--line-str)}
+.card-top{display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px}
+.ico{
+  width:44px;height:44px;border-radius:12px; flex:none;
+  display:grid;place-items:center; background:var(--accent-soft); color:var(--accent);
+}
+.ico svg{width:22px;height:22px}
+.card h3{margin:0 0 6px; font-size:18px; letter-spacing:-.01em; font-weight:750}
+.card .role{margin:0 0 12px; font-size:12.5px; color:var(--fg-dim); letter-spacing:.02em}
+.card p.desc{margin:0 0 16px; font-size:14.5px; color:var(--fg-mut); flex:1}
+.chips{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px}
+.chip{
+  font-size:11.5px; padding:4px 9px; border-radius:7px;
+  background:var(--bg-sunk); color:var(--fg-mut); border:1px solid var(--line);
+  letter-spacing:.02em;
+}
+.badge{font-size:11px; font-weight:650; padding:4px 10px; border-radius:99px;
+  white-space:nowrap; letter-spacing:.03em}
+.b-live{background:var(--ok-soft); color:var(--ok)}
+.b-wip{background:var(--warn-soft); color:var(--warn)}
+.b-arc{background:var(--bg-sunk); color:var(--fg-dim); border:1px solid var(--line)}
+.card-act{display:flex; align-items:center; gap:10px; margin-top:auto}
+.lnk{
+  font-size:13px; color:var(--fg-dim); text-decoration:none;
+  display:inline-flex; align-items:center; gap:6px; padding:6px 4px; transition:.18s;
+}
+.lnk:hover{color:var(--fg)}
+.lnk svg{width:14px;height:14px}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line); margin-top:40px; padding:30px 0 46px}
+.ft{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+    font-size:13px; color:var(--fg-dim)}
+.ft a{text-decoration:none; color:var(--fg-mut)}
+.ft a:hover{color:var(--fg)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important; animation:none!important}
+}
