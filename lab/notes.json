@@ -8,14 +8,6 @@
     "date": "2026-08-16"
   },
   {
-    "title": "Java / Spring 基礎まとめ — Flask経験者向け（HTML版）",
-    "desc": "同じ学習メモを変換済みHTMLで表示する版",
-    "file": "notes/java-spring-basics-for-flask.html",
-    "type": "html",
-    "tags": ["Java", "Spring", "Flask"],
-    "date": "2026-08-16"
-  },
-  {
     "title": "このノート置き場の使い方",
     "desc": "新しいメモを追加する手順と、notes.json の書き方",
     "file": "notes/how-to-add.md",
