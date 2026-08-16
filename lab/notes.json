@@ -13,14 +13,7 @@
     "file": "notes/how-to-add.md",
     "type": "md",
     "tags": ["運用"],
-    "date": "2026-08-15"
-  },
-  {
-    "title": "表示サンプル — Markdown はこう見える",
-    "desc": "見出し・表・コード・引用などの表示確認用。不要になったら消してよい",
-    "file": "notes/sample-markdown.md",
-    "type": "md",
-    "tags": ["サンプル"],
-    "date": "2026-08-15"
+    "date": "2026-08-15",
+    "hidden": true
   }
 ]

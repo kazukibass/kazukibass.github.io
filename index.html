@@ -228,7 +228,7 @@
   fetch('lab/notes.json', { cache: 'no-cache' })
     .then(function (r) { if (!r.ok) throw 0; return r.json(); })
     .then(function (notes) {
-      var list = (notes || []).slice().sort(function (a, b) {
+      var list = (notes || []).filter(function (n) { return !n.hidden; }).sort(function (a, b) {
         return String(b.date || '').localeCompare(String(a.date || ''));
       }).slice(0, 3);
 

@@ -237,7 +237,7 @@
   fetch('notes.json', { cache: 'no-cache' })
     .then(function (r) { if (!r.ok) throw new Error('notes.json が読めません'); return r.json(); })
     .then(function (data) {
-      notes = (data || []).slice().sort(function (a, b) {
+      notes = (data || []).filter(function (n) { return !n.hidden; }).sort(function (a, b) {
         return String(b.date || '').localeCompare(String(a.date || ''));
       });
       if (!notes.length) {
