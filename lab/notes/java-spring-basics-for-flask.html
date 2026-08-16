@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Java Spring 基礎まとめ Flask対応版</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;max-width:920px;margin:40px auto;padding:0 24px;line-height:1.75;color:#222}
+  h1{font-size:2em;border-bottom:3px solid #222;padding-bottom:.35em}
+  h2{margin-top:2.1em;border-bottom:1px solid #ddd;padding-bottom:.3em}
+  h3{margin-top:1.5em}
+  table{border-collapse:collapse;width:100%;margin:1.2em 0}
+  th,td{border:1px solid #ccc;padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:#f4f4f4}
+  pre{background:#f6f8fa;padding:15px;overflow:auto;border-radius:8px;line-height:1.55}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  p code,li code{background:#f1f1f1;padding:2px 5px;border-radius:4px}
+  blockquote{margin:1em 0;border-left:4px solid #aaa;padding:.2em 1em;color:#444;background:#fafafa}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Java Spring 基礎まとめ Flask対応版</h1>
+</header>
+<h1 id="java-spring-基礎まとめ-flask経験者向け">Java / Spring 基礎まとめ
+— Flask経験者向け</h1>
+<p>Flaskでの経験と対応させながら、Java / Springで混乱しやすい<br />
+<strong>main / class / interface / abstract / public / private / DTO /
+DAO / Service / Controller</strong> を整理する。</p>
+<hr />
+<h2 id="まずflaskとspringを対応させる">1.
+まずFlaskとSpringを対応させる</h2>
+<p>Flaskでざっくりこうだったもの：</p>
+<pre class="text"><code>app.py
+  ↓ アプリ起動
+views.py
+  ↓ URL受付・処理
+DB</code></pre>
+<p>Springでは役割をより細かく分ける。</p>
+<pre class="text"><code>Application.java
+    ↓ Spring Boot起動
+
+Controller
+    ↓ 受付
+
+Service
+    ↓ アプリの処理
+
+DAO / Repository
+    ↓ DB操作
+
+Database</code></pre>
+<h3 id="対応表">対応表</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Flask</th>
+<th>Spring / Java</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>app.py</code></td>
+<td><code>Application.java</code> + <code>main()</code></td>
+<td>アプリ起動</td>
+</tr>
+<tr class="even">
+<td><code>app.run()</code></td>
+<td><code>SpringApplication.run()</code></td>
+<td>Spring Bootを起動</td>
+</tr>
+<tr class="odd">
+<td><code>views.py</code></td>
+<td><code>Controller</code></td>
+<td>URL・リクエスト受付</td>
+</tr>
+<tr class="even">
+<td><code>@route()</code></td>
+<td><code>@GetMapping</code> / <code>@PostMapping</code></td>
+<td>URLと処理を結びつける</td>
+</tr>
+<tr class="odd">
+<td>処理用関数・モジュール</td>
+<td><code>Service</code></td>
+<td>アプリの処理・ルール</td>
+</tr>
+<tr class="even">
+<td>DBアクセス用コード</td>
+<td><code>DAO / Repository</code></td>
+<td>DB操作</td>
+</tr>
+<tr class="odd">
+<td>dict / データ用クラスなど</td>
+<td><code>DTO</code></td>
+<td>データをまとめて運ぶ</td>
+</tr>
+</tbody>
+</table>
+<p>Flaskでは小規模なら <code>views.py</code>
+に色々書けるが、Springでは役割を分けることが多い。</p>
+<hr />
+<h1 id="mainとは">2. mainとは？</h1>
+<p><code>main</code> は
+<strong>Javaプログラムのスタート地点</strong>。</p>
+<p>Spring Bootではよくこう書く。</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@SpringBootApplication</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Application <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        SpringApplication<span class="op">.</span><span class="fu">run</span><span class="op">(</span>Application<span class="op">.</span><span class="fu">class</span><span class="op">,</span> args<span class="op">);</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Flaskでいう：</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    app.run()</span></code></pre></div>
+<p>に近い。</p>
+<pre class="text"><code>Java起動
+  ↓
+main()
+  ↓
+SpringApplication.run()
+  ↓
+Spring Boot起動
+  ↓
+リクエスト待機</code></pre>
+<p>つまり、</p>
+<blockquote>
+<p><strong>main = Flaskのapp.pyにある起動処理</strong></p>
+</blockquote>
+<p>くらいの理解でOK。</p>
+<hr />
+<h1 id="classとは">3. classとは？</h1>
+<p><code>class</code> は
+<strong>データや処理をまとめた設計図</strong>。</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Cat <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">String</span> name<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">cry</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">&quot;にゃー&quot;</span><span class="op">);</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>Cat</code> という種類のオブジェクトを作れる。</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Cat cat <span class="op">=</span> <span class="kw">new</span> <span class="fu">Cat</span><span class="op">();</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cat<span class="op">.</span><span class="fu">cry</span><span class="op">();</span></span></code></pre></div>
+<p>Springでも、</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserService <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserDto <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>など、基本的な部品はclassとして作られる。</p>
+<hr />
+<h1 id="interfaceとは">4. interfaceとは？</h1>
+<p><code>interface</code> は、</p>
+<blockquote>
+<p><strong>「これを名乗るなら、この機能を用意してください」</strong></p>
+</blockquote>
+<p>という約束。</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> Animal <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">cry</span><span class="op">();</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>実際の処理はclass側で書く。</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Cat <span class="kw">implements</span> Animal <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">cry</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">&quot;にゃー&quot;</span><span class="op">);</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>覚え方：</p>
+<pre class="text"><code>interface
+↓
+何をできる必要があるか決める
+
+class
+↓
+実際にどう動くかを書く
+
+implements
+↓
+interfaceの約束を実装する</code></pre>
+<hr />
+<h1 id="abstract-classとの違い">5. abstract classとの違い</h1>
+<p><code>interface</code> と <code>abstract class</code>
+は似て見える。</p>
+<p>一番簡単な区別：</p>
+<pre class="text"><code>interface
+= 「何ができる？」
+
+abstract class
+= 「何の仲間？」</code></pre>
+<h3 id="interface">interface</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> Flyable <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">fly</span><span class="op">();</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>「飛べる」という能力。</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Bird <span class="kw">implements</span> Flyable <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>→ Birdは <strong>飛べる</strong></p>
+<h3 id="abstract-class">abstract class</h3>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">abstract</span> <span class="kw">class</span> Animal <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">eat</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">&quot;食べる&quot;</span><span class="op">);</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">abstract</span> <span class="dt">void</span> <span class="fu">cry</span><span class="op">();</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>共通処理を持った「動物」という親。</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Cat <span class="kw">extends</span> Animal <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>→ Catは <strong>Animalの一種</strong></p>
+<p>覚え方：</p>
+<pre class="text"><code>extends
+= ○○は△△の一種
+
+implements
+= ○○は△△できる</code></pre>
+<p>学習中はまず <code>class + interface + implements</code>
+を優先して理解すればOK。</p>
+<hr />
+<h1 id="public-private-protectedとは">6. public / private /
+protectedとは？</h1>
+<p>これは、</p>
+<blockquote>
+<p><strong>「誰がこの変数・メソッドを使っていいの？」</strong></p>
+</blockquote>
+<p>を決める。</p>
+<table>
+<thead>
+<tr class="header">
+<th>修飾子</th>
+<th>ざっくり意味</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>public</code></td>
+<td>外から使ってOK</td>
+</tr>
+<tr class="even">
+<td><code>private</code></td>
+<td>このclassの中だけ</td>
+</tr>
+<tr class="odd">
+<td><code>protected</code></td>
+<td>同じpackageや継承先などから使える</td>
+</tr>
+<tr class="even">
+<td>何も書かない</td>
+<td>基本的に同じpackage内</td>
+</tr>
+</tbody>
+</table>
+<p>最初は、</p>
+<pre class="text"><code>public  = 外向け
+private = 内部用</code></pre>
+<p>を理解すればかなり読める。</p>
+<hr />
+<h2 id="なぜフィールドはprivate">7. なぜフィールドはprivate？</h2>
+<p>DTOでよく見る形：</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserDto <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> id<span class="op">;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">String</span> name<span class="op">;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="fu">getId</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> id<span class="op">;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">setId</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">id</span> <span class="op">=</span> id<span class="op">;</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>意味は：</p>
+<pre class="text"><code>private int id
+↓
+idそのものは外から直接触らせない
+
+public getId()
+↓
+idを取得する入口は公開
+
+public setId()
+↓
+idを設定する入口は公開</code></pre>
+<p>基本形：</p>
+<pre class="text"><code>フィールド
+→ private
+
+外から使わせるメソッド
+→ public
+
+class内部だけで使う補助メソッド
+→ private</code></pre>
+<hr />
+<h1 id="メソッドの読み方">8. メソッドの読み方</h1>
+<p>ここはかなり重要。</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> UserDto <span class="fu">getUser</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span></code></pre></div>
+<p>を4つに分ける。</p>
+<pre class="text"><code>public | UserDto    | getUser    | int id
+-------|------------|------------|--------
+公開   | 戻り値の型 | メソッド名 | 引数</code></pre>
+<p>日本語にすると、</p>
+<blockquote>
+<p><strong>「int型のidを受け取って、UserDtoを返す、外から呼べるgetUserメソッド」</strong></p>
+</blockquote>
+<h3 id="voidなら">voidなら</h3>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">delete</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span></code></pre></div>
+<pre class="text"><code>public
+→ 外から呼べる
+
+void
+→ 何も返さない
+
+delete
+→ メソッド名
+
+int id
+→ int型のidを受け取る</code></pre>
+<h3 id="privateなら">privateなら</h3>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="dt">void</span> <span class="fu">checkId</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span></code></pre></div>
+<p>→
+<strong>「このclass内部だけで使える、何も返さないcheckIdメソッド」</strong></p>
+<hr />
+<h1 id="dtoとは">9. DTOとは？</h1>
+<p>DTO = <strong>データを入れて運ぶ箱</strong></p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserDto <span class="op">{</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">int</span> id<span class="op">;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">String</span> name<span class="op">;</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// getter / setter</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>イメージ：</p>
+<pre class="text"><code>UserDto
+┌───────────────┐
+│ id   = 3      │
+│ name = Kazuki │
+└───────────────┘</code></pre>
+<p>重要：</p>
+<blockquote>
+<p><strong>DTO自身がDBを検索するわけではない。</strong></p>
+</blockquote>
+<p>DTOは基本的にデータを持つだけ。</p>
+<hr />
+<h1 id="daoとは">10. DAOとは？</h1>
+<p>DAO = <strong>DB操作担当</strong></p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> UserDao <span class="op">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    UserDto <span class="fu">findById</span><span class="op">(</span><span class="dt">int</span> id<span class="op">);</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">delete</span><span class="op">(</span><span class="dt">int</span> id<span class="op">);</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>この、</p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>UserDto <span class="fu">findById</span><span class="op">(</span><span class="dt">int</span> id<span class="op">);</span></span></code></pre></div>
+<p>は、</p>
+<pre class="text"><code>int型のidを受け取る
+        ↓
+DBから検索する
+        ↓
+UserDtoを返す</code></pre>
+<p>という約束。</p>
+<p>実際のDB処理は実装classに書く。</p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserDaoImpl <span class="kw">implements</span> UserDao <span class="op">{</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> UserDto <span class="fu">findById</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// DBを検索</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>        UserDto user <span class="op">=</span> <span class="kw">new</span> <span class="fu">UserDto</span><span class="op">();</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        user<span class="op">.</span><span class="fu">setId</span><span class="op">(</span><span class="dv">3</span><span class="op">);</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>        user<span class="op">.</span><span class="fu">setName</span><span class="op">(</span><span class="st">&quot;Kazuki&quot;</span><span class="op">);</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> user<span class="op">;</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>流れ：</p>
+<pre class="text"><code>DAO
+ ↓
+DB検索
+ ↓
+UserDtoを作る
+ ↓
+setterで検索結果を入れる
+ ↓
+return user</code></pre>
+<hr />
+<h1 id="serviceとは">11. Serviceとは？</h1>
+<p>Service = <strong>アプリとして何をするかを決める場所</strong></p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserService <span class="op">{</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> UserDao userDao<span class="op">;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> UserDto <span class="fu">getUser</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> userDao<span class="op">.</span><span class="fu">findById</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>この1行：</p>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> userDao<span class="op">.</span><span class="fu">findById</span><span class="op">(</span>id<span class="op">);</span></span></code></pre></div>
+<p>が分かりにくければ、こう分解する。</p>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> UserDto <span class="fu">getUser</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    UserDto user <span class="op">=</span> userDao<span class="op">.</span><span class="fu">findById</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> user<span class="op">;</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>つまり：</p>
+<pre class="text"><code>① userDao.findById(id) を呼ぶ
+
+② DAOがDBを検索する
+
+③ DAOからUserDtoが返ってくる
+
+④ ServiceがそのUserDtoを受け取る
+
+⑤ return user でさらに呼び出し元へ返す</code></pre>
+<hr />
+<h1 id="dtoの中でdaoを呼んでいるわけではない">12.
+「DTOの中でDAOを呼んでいる」わけではない</h1>
+<p>特にここに注意。</p>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> UserDto <span class="fu">getUser</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> userDao<span class="op">.</span><span class="fu">findById</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><code>UserDto</code> と書いてあるので、</p>
+<blockquote>
+<p>DTOの中でDAOを呼んでいる？</p>
+</blockquote>
+<p>と見えやすい。</p>
+<p>しかし違う。</p>
+<p>例えば全体を見る：</p>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserService <span class="op">{</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> UserDao userDao<span class="op">;</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> UserDto <span class="fu">getUser</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> userDao<span class="op">.</span><span class="fu">findById</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>この処理は、</p>
+<pre class="text"><code>public class UserService {
+        ↑
+ここから
+
+    ...
+
+}
+↑
+ここまで
+
+全部UserServiceの中</code></pre>
+<p><code>UserDto</code> は単に、</p>
+<blockquote>
+<p><strong>このメソッドはUserDto型を返します</strong></p>
+</blockquote>
+<p>という意味。</p>
+<pre class="text"><code>public UserDto getUser(int id)
+       ↑
+       戻り値の型</code></pre>
+<h3 id="誰の処理か調べたいとき">誰の処理か調べたいとき</h3>
+<p><strong>どのclassの <code>{ }</code>
+の中に書かれているかを見る。</strong></p>
+<hr />
+<h1 id="a.b-の読み方">13. <code>A.B()</code> の読み方</h1>
+<p>Javaで、</p>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>userDao<span class="op">.</span><span class="fu">findById</span><span class="op">(</span>id<span class="op">)</span></span></code></pre></div>
+<p>が出てきたら、</p>
+<pre class="text"><code>userDao . findById(id)
+   ↑          ↑
+こいつの    この処理を呼ぶ</code></pre>
+<p>つまり、</p>
+<blockquote>
+<p><strong>userDaoのfindById()を呼ぶ</strong></p>
+</blockquote>
+<p>という意味。</p>
+<p>同様に、</p>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>user<span class="op">.</span><span class="fu">getName</span><span class="op">()</span></span></code></pre></div>
+<p>なら、</p>
+<blockquote>
+<p><strong>userのgetName()を呼ぶ</strong></p>
+</blockquote>
+<p>という意味。</p>
+<hr />
+<h1 id="controllerとは">14. Controllerとは？</h1>
+<p>Controllerは <strong>リクエストの受付</strong>。</p>
+<p>Flaskの <code>views.py</code> にかなり近い。</p>
+<p>Flask：</p>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&quot;/users/&lt;int:id&gt;&quot;</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> user(<span class="bu">id</span>):</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p>Spring：</p>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Controller</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserController <span class="op">{</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">@GetMapping</span><span class="op">(</span><span class="st">&quot;/users/{id}&quot;</span><span class="op">)</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">String</span> <span class="fu">showUser</span><span class="op">(</span><span class="at">@PathVariable</span> <span class="dt">int</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        UserDto user <span class="op">=</span> userService<span class="op">.</span><span class="fu">getUser</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;user&quot;</span><span class="op">;</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>ControllerはServiceに、</p>
+<blockquote>
+<p>「このユーザー取って」</p>
+</blockquote>
+<p>と頼む。</p>
+<p>ServiceがDAOに、</p>
+<blockquote>
+<p>「DBから探して」</p>
+</blockquote>
+<p>と頼む。</p>
+<hr />
+<h1 id="全部つなげる">15. 全部つなげる</h1>
+<p>ブラウザから：</p>
+<pre class="text"><code>/users/3</code></pre>
+<p>にアクセスした場合。</p>
+<pre class="text"><code>ブラウザ
+    ↓
+
+Controller
+「/users/3 が来た」
+    ↓
+userService.getUser(3)
+
+Service
+「ユーザー3を取得する」
+    ↓
+userDao.findById(3)
+
+DAO
+「DBを検索する」
+    ↓
+
+Database
+id=3
+name=Kazuki
+
+    ↓
+
+DAO
+new UserDto()
+setId(3)
+setName(&quot;Kazuki&quot;)
+    ↓
+return user
+
+    ↓
+
+Service
+UserDtoを受け取る
+    ↓
+return user
+
+    ↓
+
+Controller
+UserDtoを受け取る
+    ↓
+
+画面へ</code></pre>
+<hr />
+<h1 id="flaskとspringをもう一度比較">16.
+FlaskとSpringをもう一度比較</h1>
+<h3 id="flaskで一つの関数に書くなら">Flaskで一つの関数に書くなら</h3>
+<div class="sourceCode" id="cb50"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&quot;/users/&lt;int:id&gt;&quot;</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> user(<span class="bu">id</span>):</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># DB検索</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    user <span class="op">=</span> find_user(<span class="bu">id</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 必要な処理</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&quot;user.html&quot;</span>, user<span class="op">=</span>user)</span></code></pre></div>
+<p>Springではこれを分業させるイメージ。</p>
+<pre class="text"><code>Controller
+↓
+「リクエスト受付」
+
+Service
+↓
+「何をするか」
+
+DAO
+↓
+「DBをどう操作するか」
+
+DTO
+↓
+「データを運ぶ」</code></pre>
+<p>Springは、</p>
+<blockquote>
+<p><strong>Flaskで1か所に書ける処理を、役割ごとにclassへ分けている</strong></p>
+</blockquote>
+<p>と考えると理解しやすい。</p>
+<hr />
+<h1 id="最低限これだけ覚える">17. 最低限これだけ覚える</h1>
+<pre class="text"><code>main
+= Java / Spring Bootのスタート地点
+= Flaskのapp.pyの起動処理に近い
+
+
+class
+= 実際のデータや処理を書く
+
+
+interface
+= 実装してほしい機能を決める
+
+
+implements
+= interfaceの約束を実装する
+
+
+extends
+= 親classを継承する
+
+
+abstract class
+= 共通処理を持てる未完成の親class
+
+
+Controller
+= リクエスト受付
+= Flaskのviews.pyに近い
+
+
+Service
+= アプリの処理・ルール
+
+
+DAO
+= DB操作
+
+
+DTO
+= データを運ぶ箱
+
+
+public
+= 外から使ってOK
+
+
+private
+= このclassの中だけ
+
+
+protected
+= 継承先などにも使わせる
+
+
+void
+= 戻り値なし</code></pre>
+<hr />
+<h1 id="コードを読むときの手順">18. コードを読むときの手順</h1>
+<p>Javaコードを見たら、まずこの順番で見る。</p>
+<h3 id="今どのclassにいる">① 今どのclassにいる？</h3>
+<div class="sourceCode" id="cb53"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> UserService <span class="op">{</span></span></code></pre></div>
+<p>→ 今は <code>UserService</code> の中。</p>
+<h3 id="メソッドを分解する">② メソッドを分解する</h3>
+<div class="sourceCode" id="cb54"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> UserDto <span class="fu">getUser</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span></code></pre></div>
+<pre class="text"><code>public
+↓
+誰から使える？
+
+UserDto
+↓
+何を返す？
+
+getUser
+↓
+メソッド名は？
+
+int id
+↓
+何を受け取る？</code></pre>
+<h3 id="a.b-を探す">③ <code>A.B()</code> を探す</h3>
+<div class="sourceCode" id="cb56"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>userDao<span class="op">.</span><span class="fu">findById</span><span class="op">(</span>id<span class="op">)</span></span></code></pre></div>
+<p>→ <code>userDao</code> の <code>findById()</code> を呼んでいる。</p>
+<h3 id="returnを見る">④ returnを見る</h3>
+<div class="sourceCode" id="cb57"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> user<span class="op">;</span></span></code></pre></div>
+<p>→ <code>user</code> を呼び出し元へ返している。</p>
+<hr />
+<h2 id="最終イメージ">最終イメージ</h2>
+<pre class="text"><code>Application.java / main
+        │
+        │ Spring Boot起動
+        ▼
+
+     Controller
+   Flaskのviews.py
+        │
+        │ 呼ぶ
+        ▼
+
+      Service
+   アプリの処理
+        │
+        │ 呼ぶ
+        ▼
+
+   DAO / Repository
+      DB操作
+        │
+        ▼
+
+     Database
+
+
+データはDTOに入れて運ぶ</code></pre>
+<p>まずは、</p>
+<blockquote>
+<p><strong>「今どのclassにいるか」→「戻り値は何か」→「誰のメソッドを呼んでいるか」</strong></p>
+</blockquote>
+<p>の3点を見ると、Java / Springのコードをかなり追いやすくなる。</p>
+</body>
+</html>
