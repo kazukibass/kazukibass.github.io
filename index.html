@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>kazuki — 作ったもの置き場</title>
-<meta name="description" content="kazuki の制作物ハブ。Kanpe、FlowDraft などブラウザだけで動く自作Webツールと、学習メモをまとめています。">
+<meta name="description" content="kazuki の制作物ハブ。ブラウザですぐ使える自作Webツールと、調べたことをまとめた学習メモを公開しています。">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e0e0f" media="(prefers-color-scheme: dark)">
@@ -36,8 +36,8 @@
       <p class="eyebrow">Tools &amp; Notes</p>
       <h1>作ったものを、<br><em>ここから全部</em>開ける。</h1>
       <p class="lede">
-        発表用のカンペと、設計用のフローチャート。
-        ブラウザだけで動く自作Webツールと、調べたことをまとめた学習メモを置いています。
+        日々の作業や学習を少し便利にする、ブラウザだけで動く自作Webツールと、
+        調べたことをまとめた学習メモを置いています。
         インストール不要、リンクを開けばそのまま使えます。
       </p>
       <div class="cta">
@@ -56,7 +56,7 @@
   <!-- ============ TOOLS ============ -->
   <section id="tools">
     <div class="wrap">
-      <div class="sec-hd"><h2>ツール</h2><span class="cnt">3 件公開中</span></div>
+      <div class="sec-hd"><h2>ツール</h2><span class="cnt">4 件公開中</span></div>
       <p class="sec-sub">ブラウザで完結する自作ツール。データは各自の端末に保存され、外部に送信されません。</p>
 
       <div class="grid grid-2">
@@ -84,6 +84,35 @@
           <div class="card-act">
             <a class="btn btn-p" href="https://kazukibass.github.io/kanpe/" target="_blank" rel="noopener">開く</a>
             <a class="lnk" href="https://github.com/kazukibass/kanpe" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.9 18.3 5.2 18.3 5.2c.7 1.7.3 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
+              ソース
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-top">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 2h3a1 1 0 0 1 1 1v15H4V6a1 1 0 0 1 1-1h3z"/><path d="m8 13 2.5 2.5L16 10"/></svg></div>
+            <span class="badge b-live">公開中</span>
+          </div>
+          <h3>Mock Exam</h3>
+          <p class="role">さまざまな分野に使える模擬試験</p>
+          <p class="desc">
+            組み込みの問題集や自作の問題集で、選択式の模擬試験に挑戦できるクイズツール。
+            JSONファイルやテキストから問題集を追加でき、回答後は正誤と解説を確認できます。
+            問題集と受験結果はブラウザに保存され、結果はJSON / CSVで書き出せます。
+          </p>
+          <div class="chips">
+            <span class="chip">ランダム出題</span>
+            <span class="chip">問題集インポート</span>
+            <span class="chip">正誤・解説表示</span>
+            <span class="chip">受験結果を保存</span>
+            <span class="chip">JSON / CSV 出力</span>
+            <span class="chip">ローカル保存</span>
+          </div>
+          <div class="card-act">
+            <a class="btn btn-p" href="https://kazukibass.github.io/mock-exam/" target="_blank" rel="noopener">開く</a>
+            <a class="lnk" href="https://github.com/kazukibass/mock-exam" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.9 18.3 5.2 18.3 5.2c.7 1.7.3 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
               ソース
             </a>
