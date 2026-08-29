@@ -101,6 +101,27 @@
 - `.card-act` の2つのリンク（公開URL / リポジトリURL）
 - `.badge` … `b-live`（公開中）/ `b-wip`（開発中）/ `b-arc`（アーカイブ）
 
+### ランディングページ経由の共通ナビ
+
+公開ツールへのリンクには `?from=portfolio` を付ける。各ツールはこの入口情報がある場合だけ、`assets/shell.js` と `assets/shell.css` による共通ナビを有効にする。直接URLやブックマークから開いた場合は、各ツール本来のUIを維持する。
+
+ツール側の `<head>` では、ローカルCSSの後に共通CSSと接続設定を置く。
+
+```html
+<link rel="stylesheet" href="https://kazukibass.github.io/assets/shell.css">
+<script src="https://kazukibass.github.io/assets/shell.js"
+        data-tool="Tool Name"
+        data-kicker="CATEGORY"
+        data-adopt="#toolbar"></script>
+```
+
+- `data-adopt`: 共通バーへ移す既存操作要素。イベントリスナーを保つため、複製せずDOM要素そのものを移す。
+- `data-adopt-min`: 指定幅以上だけ移設する。モバイル固有UIを残すツールに使う。
+- `data-slim="mobile"`: モバイルでは既存UIを維持し、ランディングページへ戻る小さなボタンだけを表示する。
+- `data-theme-attr` / `data-theme-dark`: ツール固有のテーマ状態へ共通バーを追従させる。
+
+新しいツールを追加するときは、直接アクセスと `?from=portfolio` 付きアクセスの両方を確認し、デスクトップと390px幅で操作欠落・二段ナビ・横overflowがないことを検証する。
+
 `.sec-hd` の `<span class="cnt">` にある件数の更新も忘れずに。
 
 ### リポジトリ行を追加する
