@@ -19,6 +19,7 @@
 
   root.classList.add('kb-shell-active');
   if (cfg.slim === 'mobile') root.classList.add('kb-shell-slim-mobile');
+  if (cfg.mobileHome === 'brand') root.classList.add('kb-shell-mobile-brand');
 
   function element(tag, className, text) {
     var node = document.createElement(tag);

@@ -118,6 +118,7 @@
 - `data-adopt`: 共通バーへ移す既存操作要素。イベントリスナーを保つため、複製せずDOM要素そのものを移す。
 - `data-adopt-min`: 指定幅以上だけ移設する。モバイル固有UIを残すツールに使う。
 - `data-slim="mobile"`: モバイルでは既存UIを維持し、ランディングページへ戻る小さなボタンだけを表示する。
+- `data-mobile-home="brand"`: `data-slim="mobile"` 時の戻り口を矢印ではなくLPのKロゴにする。
 - `data-theme-attr` / `data-theme-dark`: ツール固有のテーマ状態へ共通バーを追従させる。
 
 新しいツールを追加するときは、直接アクセスと `?from=portfolio` 付きアクセスの両方を確認し、デスクトップと390px幅で操作欠落・二段ナビ・横overflowがないことを検証する。
